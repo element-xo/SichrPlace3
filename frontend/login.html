@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - SichrPlace</title>
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" href="img/favicon.ico" sizes="any">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <link rel="icon" href="img/favicon-96x96.png" sizes="96x96" type="image/png">
+    <link rel="icon" href="img/web-app-manifest-192x192.png" sizes="192x192" type="image/png">
+    <link rel="icon" href="img/web-app-manifest-512x512.png" sizes="512x512" type="image/png">
+    
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap">
+    <link rel="stylesheet" href="css/logo-system.css">
+    <script src="js/translation-handler.js" defer></script>
+    <script src="js/logo-cookie-manager.js" defer></script>
+    
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1d4ed8;
+            --primary-darker: #134cca;
+            --primary-light: #b1c7f8;
+            --primary-lighter: #DBEAFE;
+            --primary-hover: #5484ef;
+            --primary-accent: #60A5FA;
+            --secondary: #F9FAFB;
+            --accent: #40E0D0;
+            --text: #222;
+            --muted: #6b7280;
+            --card: #fff;
+            --danger: #EF4444;
+            --success: #10b981;
+            --background: #FFFFFF;
+            --border: #E5E7EB;
+            --radius: 18px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.06);
+            --heading-font: "Poppins", sans-serif;
+            --body-font: "Roboto", sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background: linear-gradient(135deg, var(--primary-lighter) 0%, var(--secondary) 50%, var(--primary-light) 100%);
+            min-height: 100vh;
+            color: var(--text);
+            position: relative;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            33% { transform: translate(-48%, -52%) rotate(1deg); }
+            66% { transform: translate(-52%, -48%) rotate(-1deg); }
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            min-height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .login-card {
+            background: var(--background);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .sichrplace-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-family: var(--heading-font);
+            font-weight: 700;
+            font-size: 1.8rem;
+            padding-top: 0.5rem;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-accent));
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-section h1 {
+            font-family: var(--heading-font);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-section p {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--background);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: var(--muted);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-darker));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            color: #dc2626;
+            border-left: 4px solid #dc2626;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #059669;
+            border-left: 4px solid #059669;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-links p {
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .login-card {
+                padding: 2rem 1.5rem;
+                max-width: 95%;
+                margin: 0 auto;
+            }
+            
+            .sichrplace-logo {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Header Styles - Hidden for centered login */
+        header {
+            display: none;
+        }
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand-text {
+            display: flex;
+            align-items: baseline;
+            font-family: var(--heading-font);
+            font-weight: 700;
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .sichr-text {
+            color: var(--primary);
+        }
+
+        .place-text {
+            color: var(--primary);
+        }
+        .logo img {
+            height: 40px;
+            width: auto;
+            filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1));
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--heading-font);
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+        }
+        header nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            position: relative;
+        }
+        header nav a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-family: var(--heading-font);
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+        header nav a:hover {
+            color: var(--accent);
+        }
+        .cart-icon {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .cart-icon:hover {
+            background: var(--primary) !important;
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        .cart-icon i {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-logo">
+            <a href="index.html" class="logo" aria-label="SichrPlace">
+                <img src="img/sichrplace-logo.jpg" alt="SichrPlace logo" style="height:48px;width:auto;display:block;">
+                <span class="brand-text">
+                    <span class="sichrplace-text">SichrPlace</span>
+                    <span class="certified-badge" style="display:none;">Verified</span>
+                </span>
+            </a>
+        </div>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+        </button>
+        <nav class="main-nav" id="main-nav">
+            <a href="login.html" data-translate="nav.login">Login</a>
+            <a href="apartments-listing.html" data-translate="nav.apartments">Apartments</a>
+            
+            <!-- View link for viewing requests -->
+            <a href="viewing-request.html" data-translate="nav.view">View</a>
+            
+            <!-- Marketplace Cart Icon - Enhanced Visibility -->
+            <a href="marketplace.html" class="cart-icon" title="Marketplace - Buy & Sell" aria-label="Marketplace" data-translate-title="nav.marketplace.title" data-translate-aria="nav.marketplace.aria">
+                <svg class="cart-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M7.01 18.5a1.5 1.5 0 1 1-2.999.001 1.5 1.5 0 0 1 2.999-.001Zm10 0a1.5 1.5 0 1 1-3.001 0 1.5 1.5 0 0 1 3.001 0ZM6.16 7l.44 2h11.56a1 1 0 0 1 .98 1.204l-1.2 6a1 1 0 0 1-.98.796H8.18a1 1 0 0 1-.98-.804L5.53 4.5H3a1 1 0 1 1 0-2h3a1 1 0 0 1 .98.804L7.62 7H6.16Z" fill="currentColor" />
+                </svg>
+                <span class="cart-label" data-translate="nav.marketplace.label">Marketplace</span>
+            </a>
+            
+            <!-- Language Switcher moved to the rightmost position -->
+            <div class="language-switcher">
+                <button class="language-btn" id="language-btn" aria-label="Switch Language">
+                    <i class="fas fa-globe"></i>
+                    <span id="current-lang">EN</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="language-dropdown">
+                    <a href="#" data-lang="en" class="lang-option active">
+                        <span class="flag-emoji">🇺🇸</span>
+                        English
+                    </a>
+                    <a href="#" data-lang="de" class="lang-option">
+                        <span class="flag-emoji">🇩🇪</span>
+                        Deutsch
+                    </a>
+                    <a href="#" data-lang="tr" class="lang-option">
+                        <span class="flag-emoji">🇹🇷</span>
+                        Türkçe
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="login-card">
+            <div class="sichrplace-logo">
+                <img src="img/sichrplace-logo.jpg" alt="SichrPlace logo" style="height:48px;width:auto;display:inline-block;margin-right:10px;vertical-align:middle;">
+                <span style="vertical-align:middle;">
+                    <span style="color: var(--primary);">Sichr</span><span style="color: var(--primary);">Place</span>
+                </span>
+            </div>
+            
+            <div class="logo-section">
+                <p>Sign in to your SichrPlace account</p>
+            </div>
+
+            <form id="loginForm">
+                <div id="alertMessage" class="alert"></div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-options">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn" id="loginBtn">
+                    <span class="spinner" id="spinner"></span>
+                    <span id="btnText">Sign In</span>
+                </button>
+            </form>
+
+            <div class="footer-links">
+                <p>Don't have an account? <a href="create-account.html">Create account</a></p>
+                <p style="font-size: 0.75rem; margin-top: 1rem;">
+                    © 2025 SichrPlace. Secure apartment viewing platform.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication handler
+        class AuthHandler {
+            constructor() {
+                this.form = document.getElementById('loginForm');
+                this.emailInput = document.getElementById('email');
+                this.passwordInput = document.getElementById('password');
+                this.rememberInput = document.getElementById('remember');
+                this.loginBtn = document.getElementById('loginBtn');
+                this.spinner = document.getElementById('spinner');
+                this.btnText = document.getElementById('btnText');
+                this.alertMessage = document.getElementById('alertMessage');
+                
+                this.init();
+            }
+
+            init() {
+                this.form.addEventListener('submit', this.handleLogin.bind(this));
+                this.checkExistingAuth();
+                this.setupDemoCredentials();
+            }
+            
+            // Handles the login form submission - BULLETPROOF VERSION
+            async handleLogin(e) {
+                e.preventDefault();
+                
+                const email = this.emailInput.value.trim();
+                const password = this.passwordInput.value;
+                const remember = this.rememberInput.checked;
+
+                // Enhanced validation
+                if (!email || !password) {
+                    this.showAlert('Please fill in all fields', 'error');
+                    return;
+                }
+
+                if (!this.isValidEmail(email)) {
+                    this.showAlert('Please enter a valid email address', 'error');
+                    return;
+                }
+
+                this.setLoading(true);
+                this.hideAlert();
+
+                try {
+                    console.log('🔐 [LOGIN START]', {
+                        timestamp: new Date().toISOString(),
+                        email: email,
+                        remember: remember,
+                        endpoint: '/auth/login',
+                        frontend_url: window.location.href
+                    });
+
+                    // Add timeout protection (30 seconds)
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+                    const response = await fetch('/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password, remember }),
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    console.log('📡 [RESPONSE]', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        ok: response.ok,
+                        headers: Object.fromEntries([...response.headers.entries()])
+                    });
+
+                    // Validate response content type
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        throw new Error(`Unexpected response type: ${contentType}. Expected JSON. Server may be down.`);
+                    }
+
+                    const result = await response.json();
+                    console.log('📝 [RESPONSE DATA]', {
+                        success: result.success,
+                        hasToken: !!result.token,
+                        hasUser: !!result.user,
+                        message: result.message,
+                        requestId: result.requestId
+                    });
+
+                    if (response.ok && result.success) {
+                        // Validate token before storing
+                        if (!result.token || typeof result.token !== 'string' || result.token.length < 10) {
+                            throw new Error('Invalid token received from server');
+                        }
+
+                        if (!result.user || !result.user.id || !result.user.role) {
+                            throw new Error('Invalid user data received from server');
+                        }
+
+                        console.log('✅ [LOGIN SUCCESS]', {
+                            userId: result.user.id,
+                            role: result.user.role,
+                            tokenLength: result.token.length,
+                            emailVerified: result.user.emailVerified
+                        });
+
+                        this.showAlert('Login successful! Redirecting...', 'success');
+
+                        // Store authentication data CORRECTLY
+                        try {
+                            if (remember) {
+                                // REMEMBER ME: Store in localStorage only
+                                localStorage.setItem('token', result.token);
+                                localStorage.setItem('user', JSON.stringify(result.user));
+                                // Clear sessionStorage to avoid conflicts
+                                sessionStorage.removeItem('token');
+                                sessionStorage.removeItem('user');
+                                console.log('💾 [STORAGE] Saved to localStorage (remember=true)');
+                            } else {
+                                // NO REMEMBER: Store in sessionStorage only
+                                sessionStorage.setItem('token', result.token);
+                                sessionStorage.setItem('user', JSON.stringify(result.user));
+                                // Clear localStorage to avoid conflicts
+                                localStorage.removeItem('token');
+                                localStorage.removeItem('user');
+                                console.log('💾 [STORAGE] Saved to sessionStorage (remember=false)');
+                            }
+                        } catch (storageError) {
+                            console.error('❌ [STORAGE FAILED]', storageError);
+                            this.showAlert('Login successful but session storage failed. Try with "Remember me" checked.', 'warning');
+                            return;
+                        }
+
+                        // Wait to ensure storage completes before redirect
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        
+                        // Verify storage worked
+                        const storedToken = remember 
+                            ? localStorage.getItem('token')
+                            : sessionStorage.getItem('token');
+                        
+                        if (!storedToken) {
+                            console.error('❌ [STORAGE VERIFICATION FAILED]');
+                            this.showAlert('Session storage failed. Please try again or enable cookies.', 'error');
+                            return;
+                        }
+
+                        console.log('✅ [STORAGE VERIFIED] Token stored successfully');
+                        this.redirectUser(result.user.role);
+                        
+                    } else {
+                        const errorMsg = result.message || result.error || 'Login failed. Please check your credentials.';
+                        console.warn('⚠️ [LOGIN FAILED]', {
+                            status: response.status,
+                            message: errorMsg,
+                            errors: result.errors,
+                            requestId: result.requestId
+                        });
+                        this.showAlert(errorMsg, 'error');
+                    }
+
+                } catch (error) {
+                    console.error('❌ [LOGIN ERROR]', {
+                        name: error.name,
+                        message: error.message,
+                        stack: error.stack,
+                        timestamp: new Date().toISOString()
+                    });
+
+                    let errorMessage = 'Login failed. ';
+                    
+                    if (error.name === 'AbortError') {
+                        errorMessage += 'Request timed out after 30 seconds. Please check your internet connection and try again.';
+                    } else if (error.message.includes('fetch') || error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+                        errorMessage += 'Cannot connect to server. Please ensure you have internet connection and the backend server is running.';
+                    } else if (error.message.includes('Unexpected response type')) {
+                        errorMessage += 'Server returned invalid response. Backend may be down or misconfigured.';
+                    } else if (error.message.includes('Invalid token')) {
+                        errorMessage += 'Authentication token invalid. Please contact support.';
+                    } else if (error.message.includes('Invalid user data')) {
+                        errorMessage += 'Server returned invalid user data. Please contact support.';
+                    } else {
+                        errorMessage += error.message || 'An unexpected error occurred.';
+                    }
+
+                    errorMessage += ' (Check browser console for details)';
+                    this.showAlert(errorMessage, 'error');
+                    
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            // Email validation helper
+            isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            redirectUser(role) {
+                switch (role) {
+                    case 'admin':
+                        window.location.href = 'admin-dashboard.html';
+                        break;
+                    case 'landlord':
+                        window.location.href = 'landlord-dashboard.html';
+                        break;
+                    case 'tenant':
+                    case 'applicant':
+                    default:
+                        window.location.href = 'applicant-dashboard.html';
+                        break;
+                }
+            }
+
+            checkExistingAuth() {
+                const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                if (token) {
+                    const user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || '{}');
+                    console.log('✅ User already authenticated, redirecting...');
+                    this.redirectUser(user.role || 'tenant');
+                }
+            }
+
+            setupDemoCredentials() {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('demo') === 'admin') {
+                    this.emailInput.value = 'sichrplace@gmail.com';
+                    this.passwordInput.value = '';
+                    
+                    this.showAlert('Demo admin credentials pre-filled for testing', 'success');
+                }
+            }
+
+            setLoading(loading) {
+                this.loginBtn.disabled = loading;
+                this.spinner.style.display = loading ? 'block' : 'none';
+                this.btnText.textContent = loading ? 'Signing In...' : 'Sign In';
+            }
+
+            showAlert(message, type = 'error') {
+                this.alertMessage.textContent = message;
+                this.alertMessage.className = `alert alert-${type}`;
+                this.alertMessage.style.display = 'block';
+                
+                // Auto-hide success messages
+                if (type === 'success') {
+                    setTimeout(() => this.hideAlert(), 3000);
+                }
+            }
+
+            hideAlert() {
+                this.alertMessage.style.display = 'none';
+            }
+        }
+
+        // Initialize authentication when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new AuthHandler();
+        });
+    </script>
+    <script src="js/translation-handler.js"></script>
+</body>
+</html>

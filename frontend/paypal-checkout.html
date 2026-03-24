@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayPal Checkout - SichrPlace</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="js/translation-handler.js" defer></script>
+  <style>
+    :root {
+      --primary: #2563EB;
+      --secondary: #F9FAFB;
+      --accent: #40E0D0;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --shadow: 0 2px 12px rgba(0,0,0,0.06);
+      --radius: 18px;
+      --card: #FFFFFF;
+      --background: #FFFFFF;
+      --foreground: #222222;
+      --heading-font: "Poppins", sans-serif;
+      --body-font: "Roboto", sans-serif;
+    }
+    
+    body { font-family: 'Poppins', sans-serif; background: #f4f6fa; margin: 0; color: #222; }
+    .container { max-width: 420px; margin: 60px auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 36px 32px; }
+    h1 { color: #2563EB; font-size: 1.5rem; margin-bottom: 18px; }
+    .desc { color: #6b7280; margin-bottom: 24px; }
+    .amount { font-size: 2rem; font-weight: 600; color: #222; margin-bottom: 24px; }
+    #paypal-button-container { margin-bottom: 18px; }
+    .result { margin-top: 24px; font-size: 1.1rem; }
+    .success { color: #22c55e; }
+    .error { color: #ef4444; }
+    .back-link { display: inline-block; margin-top: 24px; color: #2563EB; text-decoration: none; font-weight: 500; }
+    
+    /* Header Styles */
+    header {
+      background: var(--card);
+      box-shadow: var(--shadow);
+      padding: 0 40px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .sichrplace-text {
+      font-family: var(--heading-font);
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .certified-badge {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .logo img {
+      height: 40px;
+      width: auto;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1));
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--heading-font);
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: var(--primary);
+      text-decoration: none;
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
+    header nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      position: relative;
+    }
+    header nav a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-family: var(--heading-font);
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    header nav a:hover {
+      color: var(--accent);
+    }
+    .cart-icon {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .cart-icon:hover {
+      background: var(--primary) !important;
+      color: white !important;
+      transform: translateY(-2px);
+    }
+    .cart-icon i {
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-logo">
+      <a href="index.html" class="logo" aria-label="SichrPlace">
+        <img src="img/sichrplace-logo.jpg" alt="SichrPlace logo" style="height:48px;width:auto;display:block;">
+        <span class="brand-text">
+          <span class="sichrplace-text">SichrPlace</span>
+          <span class="certified-badge" style="display:none;">Verified</span>
+        </span>
+      </a>
+    </div>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <nav class="main-nav" id="main-nav">
+      <a href="login.html" data-translate="nav.login">Login</a>
+      <a href="apartments-listing.html" data-translate="nav.apartments">Apartments</a>
+      
+      <!-- View link for viewing requests -->
+      <a href="viewing-request.html" data-translate="nav.view">View</a>
+      
+      <!-- Marketplace Cart Icon - Enhanced Visibility -->
+      <a href="marketplace.html" class="cart-icon" title="Marketplace - Buy & Sell" aria-label="Marketplace" data-translate-title="nav.marketplace.title" data-translate-aria="nav.marketplace.aria">
+        <svg class="cart-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M7.01 18.5a1.5 1.5 0 1 1-2.999.001 1.5 1.5 0 0 1 2.999-.001Zm10 0a1.5 1.5 0 1 1-3.001 0 1.5 1.5 0 0 1 3.001 0ZM6.16 7l.44 2h11.56a1 1 0 0 1 .98 1.204l-1.2 6a1 1 0 0 1-.98.796H8.18a1 1 0 0 1-.98-.804L5.53 4.5H3a1 1 0 1 1 0-2h3a1 1 0 0 1 .98.804L7.62 7H6.16Z" fill="currentColor" />
+        </svg>
+        <span class="cart-label" data-translate="nav.marketplace.label">Marketplace</span>
+      </a>
+      
+      <!-- Language Switcher moved to the rightmost position -->
+      <div class="language-switcher">
+        <button class="language-btn" id="language-btn" aria-label="Switch Language">
+          <i class="fas fa-globe"></i>
+          <span id="current-lang">EN</span>
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="language-dropdown" id="language-dropdown">
+          <a href="#" data-lang="en" class="lang-option active">
+            <span class="flag-emoji">🇺🇸</span>
+            English
+          </a>
+          <a href="#" data-lang="de" class="lang-option">
+            <span class="flag-emoji">🇩🇪</span>
+            Deutsch
+          </a>
+          <a href="#" data-lang="tr" class="lang-option">
+            <span class="flag-emoji">🇹🇷</span>
+            Türkçe
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <h1>PayPal Checkout</h1>
+    <div class="desc">Complete your payment securely with PayPal.</div>
+    <div class="amount" id="amount-display">€10.00</div>
+    <div id="paypal-button-container"></div>
+    <div class="result" id="result"></div>
+    <a href="apartments-listing.html" class="back-link">&larr; Back to Listings</a>
+  </div>
+  <script>
+    let paypalClientId = '';
+    let environment = 'sandbox';
+    let amount = 10.00;
+    // Fetch PayPal config
+    // Use standardized PayPal client ID instead of fetching from API
+    paypalClientId = 'AcPYlXozR8VS9kJSk7rv5MW36lMV66ZMyqZKjM0YVuvt0dJ1cIyHRvDmGeux0qu3gBOh6XswI5gin2WO';
+    environment = 'production';
+    
+    // Dynamically load PayPal JS SDK with standardized configuration
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR&locale=de_DE&components=buttons&enable-funding=venmo,paylater&intent=capture`;
+    script.onload = renderPayPalButton;
+    document.body.appendChild(script);
+    function renderPayPalButton() {
+      if (!window.paypal) return;
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+          // Call backend to create order
+          return fetch('/api/paypal/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount, currency: 'EUR', description: 'SichrPlace Premium', returnUrl: window.location.href, cancelUrl: window.location.href })
+          })
+          .then(res => res.json())
+          .then(data => data.paymentId);
+        },
+        onApprove: function(data, actions) {
+          // Show success message
+          document.getElementById('result').innerHTML = '<span class="success">Payment approved! Thank you for your purchase.</span>';
+        },
+        onError: function(err) {
+          document.getElementById('result').innerHTML = '<span class="error">Payment failed: ' + err + '</span>';
+        },
+        onCancel: function(data) {
+          document.getElementById('result').innerHTML = '<span class="error">Payment cancelled.</span>';
+        }
+      }).render('#paypal-button-container');
+    }
+  </script>
+</body>
+</html>
